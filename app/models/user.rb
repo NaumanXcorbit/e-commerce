@@ -7,10 +7,18 @@ class User < ApplicationRecord
   has_many :products
   has_many :comments, as: :commentable
   before_validation :check_email
-
+  after_create :user_role, :make_store
   def check_email
     if self.email.nil?
       self.email = Rails.application.credentials.email
     end
+  end
+
+  def user_role
+    self.build_rolify(role_id: Role.first.id)
+  end
+
+  def make_store
+    self.build_store(name: self.email.last(5)).save
   end
 end
