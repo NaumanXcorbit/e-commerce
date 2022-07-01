@@ -10,7 +10,7 @@ class User < ApplicationRecord
 
   def check_email
     if self.email.nil?
-      self.email = ENV['email']
+      self.email = Rails.application.credentials.email
     end
   end
 end
